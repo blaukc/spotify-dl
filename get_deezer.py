@@ -1,3 +1,8 @@
+import os
+import sys
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(current_dir, 'deezer_python_lib'))
+
 import deezer_python
 
 client = deezer_python.Client()                    #initialise deezer
