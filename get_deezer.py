@@ -1,6 +1,6 @@
-import deezer
+import deezer_python
 
-client = deezer.Client()                    #initialise deezer
+client = deezer_python.Client()                    #initialise deezer
 
 def get_track_link(track, album, artist):
     search_tracks = client.search(track, relation='track')      #gets track search output from deezer
