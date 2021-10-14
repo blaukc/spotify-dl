@@ -9,7 +9,14 @@ def downloadmusic():
 current_dir = os.path.dirname(os.path.abspath(__file__))
 download_dir = os.path.join(current_dir, 'music')
 deezer_url = 'https://www.deezer.com/en/track/1503443322'
+arl = '3dadffaa3ed08377420042cf0ede03f5f02fe54be0499fde032737b32b8c3632d08ddca191262e50a16ae8f001a6877141188a6692a8f2426d6af58036e74232e9502403c1c2db250326471544ffb97f8663fa79035e50b4425947e632d56ae0'
 
 child = pexpect.spawn('deemix -b flac -p ' + download_dir + ' ' + deezer_url)
-child.expect('All done!')
+i = child.expect(['Paste here your arl:', 'All done!'], timeout=5)
+if i == 0:
+    print('pasting arl')
+    child.sendline(arl)
+    child.expect('All done!')
+elif i == 1:
+    pass
 print(child.before)
