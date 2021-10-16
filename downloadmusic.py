@@ -1,31 +1,45 @@
 from get_deezer import get_track_link, get_album_link
-from get_spotifyplaylist import get_spotify_playlist
+from get_spotifyplaylist import get_spotify_playlist, get_spotify_playlist_name
 import os
 import platform
 import pexpect
 import wexpect
 from tabulate import tabulate
 
-def downloadmusic(deezer_url, child):
+arl = '3dadffaa3ed08377420042cf0ede03f5f02fe54be0499fde032737b32b8c3632d08ddca191262e50a16ae8f001a6877141188a6692a8f2426d6af58036e74232e9502403c1c2db250326471544ffb97f8663fa79035e50b4425947e632d56ae0'
+token = 'BQACtaNlEZcMapO9yvN-63NhmIL1XGcNCD-jBWo9-u1dAZ20M7rWysZl8VknqDyHyhZ1yze8y6KUIZ8EjA6GNIjOTwk-RoEqoPmrofXb37WguES21Ft1Of0osjmsjvy6T6oOTO6h4hHUb18a6qV6E8LopF8i'
+current_dir = os.path.dirname(os.path.abspath(__file__))
+target_dir = os.path.join(current_dir, 'music')
 
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    download_dir = os.path.join(current_dir, 'music')
-    #arl = '3dadffaa3ed08377420042cf0ede03f5f02fe54be0499fde032737b32b8c3632d08ddca191262e50a16ae8f001a6877141188a6692a8f2426d6af58036e74232e9502403c1c2db250326471544ffb97f8663fa79035e50b4425947e632d56ae0'
+def downloadmusic(download_dir, deezer_url, arl):
 
-    i = child.expect(['Paste here your arl:', 'Downloading track'], timeout=5)
+    if platform.system() == 'Windows':  #spawns child using wepect/pexpect
+        child = wexpect.spawn('deemix -b flac -p ' + download_dir + ' ' + deezer_url)
+    else:
+        child = pexpect.spawn('deemix -b flac -p ' + download_dir + ' ' + deezer_url)
+
+    i = child.expect(['Paste here your arl:', 'Download URL got'], timeout=10)
     if i == 0:
-        arl = input('Enter your Deezer ARL: ')
+        print('Requesting ARL')
         child.sendline(arl)
         print('Entering ARL...')
     elif i == 1:
         pass
-    child.expect('All done!')
-    print('Completed: ')
+
+    try:
+        child.expect('All done!', timeout=120)
+    except:
+        print('Error while downloading song')
+        return False
+
+    return True
+
+
+
 
 
 print('Starting Music Downloader...')
 playlist = input('Enter Spotify Playlist URL: ')
-token = input('Enter Spotify token: ')
 #Gets tracks from spotify playlist
 tracks = get_spotify_playlist(playlist, token)
 
@@ -37,20 +51,32 @@ if verify.lower() != 'y':
 
 #Gets Deezer links
 print('\nGetting Deezer links')
-links = []
 progress = 0
 for track in tracks:
     progress += 1
     link = get_track_link(track[0], track[1], track[2][0])
-    links.append(link)
+    tracks[progress - 1].append(link)
     if link == None:
-        print('Unable to get ' + track[0] + ' ' + str(progress) + '/' + str(len(tracks)))
+        print('Failed[' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
     else:
-        print('Gotten ' + str(progress) + '/' + str(len(tracks)))
+        print('Gotten[' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
+
+#Create directory
+name = get_spotify_playlist_name(playlist, token)
+download_dir = os.path.join(target_dir, name)
+try:
+    os.mkdir(download_dir)
+except FileExistsError:
+    print(download_dir + ' already exists')
 
 #Downloads tracks with deemix
 print('\nDownloading tracks')
-if platform.system() == 'Windows':  #spawns child using wepect/pexpect
-    child = wexpect.spawn('deemix -b flac -p ' + download_dir + ' ' + deezer_url)
-else:
-    child = pexpect.spawn('deemix -b flac -p ' + download_dir + ' ' + deezer_url)
+progress = 0
+for track in tracks:
+    progress += 1
+    if downloadmusic(download_dir, track[3], arl):
+        print('Completed[' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
+    else:
+        print('Failed[' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
+
+print('Download complete!')
