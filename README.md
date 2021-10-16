@@ -1,3 +1,3 @@
-# NFC Music Player
+# Spotify-DL
 
-An NFC controlled Music Player, using Raspberry Pi and RC-522
+Downloads Spotify playlists using deemix
