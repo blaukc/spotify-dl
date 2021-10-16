@@ -67,9 +67,9 @@ def get_spotify_playlist_name(playlist_url, token):
 
     try:
         r = requests.get(url, headers = headers)        #send get request
-        parsed = r.json()['items']                      #parse json
+        parsed = r.json()['name']                      #parse json
     except:
         print('Playlist link wrong or token expired')
         exit()
-        
+
     return parsed
