@@ -7,11 +7,19 @@ import deezer_python
 
 client = deezer_python.Client()                    #initialise deezer
 
-def get_track_link(track, album, artist):
-    search_tracks = client.search(track + ' ' + artist, relation='track')      #gets track search output from deezer
+def get_track_link(track_name, album, artist):
+    search_tracks = client.search(track_name + ' ' + artist, relation='track')      #gets track search output from deezer
 
     for track in search_tracks:                                 #loops through search output for correct track
         if artist.lower() in track.get_artist().name.lower() and album.lower() in track.get_album().title.lower():      #if artist and album match, return url
+            return track.link
+    #"backup" method if cant find track
+    for track in search_tracks:
+        if artist.lower() in track.get_artist().name.lower() and track_name == album:      #if artist match and album = track name, return url
+            return track.link
+    #"backup backup" method if cant find track
+    for track in search_tracks:
+        if artist.lower() in track.get_artist().name.lower():      #if artist match, return url
             return track.link
 
 def get_album_link(album, artist):

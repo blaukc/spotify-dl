@@ -7,7 +7,7 @@ import wexpect
 from tabulate import tabulate
 
 arl = '3dadffaa3ed08377420042cf0ede03f5f02fe54be0499fde032737b32b8c3632d08ddca191262e50a16ae8f001a6877141188a6692a8f2426d6af58036e74232e9502403c1c2db250326471544ffb97f8663fa79035e50b4425947e632d56ae0'
-token = 'BQACtaNlEZcMapO9yvN-63NhmIL1XGcNCD-jBWo9-u1dAZ20M7rWysZl8VknqDyHyhZ1yze8y6KUIZ8EjA6GNIjOTwk-RoEqoPmrofXb37WguES21Ft1Of0osjmsjvy6T6oOTO6h4hHUb18a6qV6E8LopF8i'
+token = 'BQAYlzaKaXsv-Kja_i4_ioDKERBTCG2wQwJzJK6uKiZVyI0cQUB5L1huSSm7QUn1JrDQn2_faMCcgO3FCmy_MYmjRU3_2ejJ8TWJxP6Oaot6gcCVGFTN8g0f8WWdiONoDGykWNwIuBNPvnIA50iaC1eveBGz'
 current_dir = os.path.dirname(os.path.abspath(__file__))
 target_dir = os.path.join(current_dir, 'music')
 
@@ -26,11 +26,7 @@ def downloadmusic(download_dir, deezer_url, arl):
     elif i == 1:
         pass
 
-    try:
-        child.expect('All done!', timeout=120)
-    except:
-        print('Error while downloading song')
-        return False
+    child.expect('All done!', timeout=120)
 
     return True
 
@@ -57,9 +53,9 @@ for track in tracks:
     link = get_track_link(track[0], track[1], track[2][0])
     tracks[progress - 1].append(link)
     if link == None:
-        print('Failed[' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
+        print('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
     else:
-        print('Gotten[' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
+        print('Gotten [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
 
 #Create directory
 name = get_spotify_playlist_name(playlist, token)
@@ -72,11 +68,14 @@ except FileExistsError:
 #Downloads tracks with deemix
 print('\nDownloading tracks')
 progress = 0
+success = 0
 for track in tracks:
     progress += 1
-    if downloadmusic(download_dir, track[3], arl):
-        print('Completed[' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
-    else:
-        print('Failed[' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
+    try:
+        downloadmusic(download_dir, track[3], arl)
+        print('Completed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
+        success += 1
+    except:
+        print('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
 
-print('Download complete!')
+print('Download complete! [' + str(success) + '/' + str(len(tracks)) +']')
