@@ -23,7 +23,7 @@ def get_track_link(track_name, album, artists):
 
 
 
-def get_album_link(album, artist):                                          #loops through search output for correct track
+def get_album_link(album, artists):                                          #loops through search output for correct track
     for artist1 in artists:                                         #loops through each artist in search
         search_albums = client.search(album, relation='album')              #gets album search output from deezer
 
