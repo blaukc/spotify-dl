@@ -1,3 +1,5 @@
 deezer_arl = '3dadffaa3ed08377420042cf0ede03f5f02fe54be0499fde032737b32b8c3632d08ddca191262e50a16ae8f001a6877141188a6692a8f2426d6af58036e74232e9502403c1c2db250326471544ffb97f8663fa79035e50b4425947e632d56ae0'
-spotify_token = 'BQDbUShRYB7A-Wfmu92AV_UL1lyRKX4-mVgmtQ80k6erTk69Qixu0rrhRdZUR3wmLrZ8DuYrLj7DdnfJgbilXKaI-77j38ts7J62s2nzEi9kRwNjtoiqFqlQV0oTPylT7nSqdYqp-7wAqHb-Yt7TMV3ctPB9'
+spotify_token = 'BQBljJ6PiKFHZoG6zka2HyhueSYSWb8eK5ekwFlHfhY4PqCczrnw-cfQksbMfu0dJhHWGsTqMz7Rk3dwBZ1tekTVTDep8xm__V56D_34PjQRcS7SZGPXjyCDEhToYPTT3z9pu3jPKlDvrZYsaqDIkFLQZ1qJ'
 download_dir = 'C:\\Users\\Brandon\\Brandon\\beepboop\\py\\2021\\spotify-dl\\music'
+#128, 320, flac
+bitrate = 'flac'

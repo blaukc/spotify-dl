@@ -92,21 +92,22 @@ def get_spotify_album(endpoint, token, album):
 
 
 def get_spotify_playlist_name(endpoint, token, type):
-    endpoint = endpoint + '?fields=name'   #adds fields to narrow spotify web api search
+    # endpoint = endpoint + '?fields=name'   #adds fields to narrow spotify web api search
     headers = {'Accept': 'application/json','Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}
 
     try:
         r = requests.get(endpoint, headers = headers)        #send get request
         parsed = r.json()                      #parse json
+
+        name = parsed['name']
+        if type == 'album':
+            artists = []
+            for artist in parsed['artists']:
+                artists.append(artist['name'])
     except:
         print('Playlist link wrong or token expired')
         exit()
 
-    name = parsed['name']
-    if type == 'album':
-        artists = []
-        for artist in parsed['artists']:
-            artists.append(artist['name'])
     else:
         artists = None
 
