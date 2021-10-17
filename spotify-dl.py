@@ -5,6 +5,7 @@ import platform
 import pexpect
 import wexpect
 from tabulate import tabulate
+import argparse
 
 def downloadmusic(download_dir, deezer_url, arl):
 
@@ -26,55 +27,75 @@ def downloadmusic(download_dir, deezer_url, arl):
     return True
 
 
+def if_verbose(text, verbose):
+    if verbose:
+        print(text)
 
 
-#Start of script
-print('Starting Music Downloader...')
-playlist = input('Enter Spotify Playlist URL: ')
-#Gets tracks from spotify playlist
-tracks = get_spotify_playlist(playlist, config.spotify_token)
+
+def spotify_dl(playlist, verbose=False):
+    #Start of script
+    print('Starting Music Downloader...')
+    # playlist = input('Enter Spotify Playlist URL: ')
+    #Gets tracks from spotify playlist
+    tracks = get_spotify_playlist(playlist, config.spotify_token)
 
 
-#Checks playlist
-print('\n' + tabulate(tracks, headers=['Track', 'Album', 'Artists']))
-verify = input('Is playlist correct? (y/n) ')
-if verify.lower() != 'y':
-    exit()
+    #Checks playlist
+    if verbose:
+        print('\n' + tabulate(tracks, headers=['Track', 'Album', 'Artists']))
+        verify = input('Is playlist correct? (y/n) ')
+        if verify.lower() != 'y':
+            exit()
 
 
-#Gets Deezer links
-print('\nGetting Deezer links')
-progress = 0
-for track in tracks:
-    progress += 1
-    link = get_track_link(track[0], track[1], track[2])
-    tracks[progress - 1].append(link)
-    if link == None:
-        print('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
-    else:
-        print('Gotten [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
+    #Gets Deezer links
+    print('\nGetting Deezer links')
+    progress = 0
+    for track in tracks:
+        progress += 1
+        link = get_track_link(track[0], track[1], track[2])
+        tracks[progress - 1].append(link)
+        if link == None:
+            if_verbose('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0], verbose)
+        else:
+            if_verbose('Gotten [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0], verbose)
+            if_verbose(link, verbose)
 
 
-#Create directory
-name = get_spotify_playlist_name(playlist, config.spotify_token)
-download_dir = os.path.join(config.download_dir, name)
-try:
-    os.mkdir(download_dir)
-except FileExistsError:
-    print(download_dir + ' already exists')
-
-
-#Downloads tracks with deemix
-print('\nDownloading tracks')
-progress = 0
-success = 0
-for track in tracks:
-    progress += 1
+    #Create directory
+    name = get_spotify_playlist_name(playlist, config.spotify_token)
+    download_dir = os.path.join(config.download_dir, name)
     try:
-        downloadmusic(download_dir, track[3], config.deezer_arl)
-        print('Completed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
-        success += 1
-    except:
-        print('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
+        os.mkdir(download_dir)
+    except FileExistsError:
+        print(download_dir + ' already exists')
 
-print('Download complete! [' + str(success) + '/' + str(len(tracks)) +']')
+
+    #Downloads tracks with deemix
+    print('\nDownloading tracks')
+    progress = 0
+    success = 0
+    for track in tracks:
+        progress += 1
+        try:
+            downloadmusic(download_dir, track[3], config.deezer_arl)
+            if_verbose('Completed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0], verbose)
+            success += 1
+        except pexpect.TIMEOUT:
+            if_verbose('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0], verbose)
+            if_verbose('TIMEOUT ERROR', verbose)
+        except:
+            if_verbose('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0], verbose)
+
+    print('\nDownload complete! [' + str(success) + '/' + str(len(tracks)) +']')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='spotify playlist downloader')
+    parser.add_argument('-v', '--verbose', action='store_true', help='turn on verbose mode')
+    parser.add_argument('playlist_URL', help='Spotify Playlist URL')
+
+    args = parser.parse_args()
+
+    spotify_dl(args.playlist_URL, args.verbose)

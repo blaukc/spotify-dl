@@ -1,3 +1,3 @@
 deezer_arl = '3dadffaa3ed08377420042cf0ede03f5f02fe54be0499fde032737b32b8c3632d08ddca191262e50a16ae8f001a6877141188a6692a8f2426d6af58036e74232e9502403c1c2db250326471544ffb97f8663fa79035e50b4425947e632d56ae0'
-spotify_token = 'BQD4-8K1iv4qBgWykm45vO5sa3miB4HyZXckhvZfyf-z-dT_Ymj6FsdUMa0BBbsdKrM9JSKR5lWey0J4uugBIIXkLqHH-nODr4-zTFfy5pU7SeNQ-S_kckRz-HDMi-_iTDpFUuoAN0Hz_7GissCZ13c3rLFt'
+spotify_token = 'BQCM1WdCzXWMf8krLJqt_kmLdqSimKGk7oThpoGcczLFG2BtoC2ROhha4zS_LQMEiM10MPtgwdj-_F1e4Xfevhx9Q3qTp1wbop4U7wkZvz_jgOdL5URRGzLEi7JKZ9164n16gJE45ZYFlLs-8jAb9qZ-qt4x'
 download_dir = 'C:\\Users\\Brandon\\Brandon\\beepboop\\py\\2021\\spotify-dl\\music'
