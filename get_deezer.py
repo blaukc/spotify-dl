@@ -7,27 +7,35 @@ import deezer_python
 
 client = deezer_python.Client()                    #initialise deezer
 
-def get_track_link(track_name, album, artist):
-    search_tracks = client.search(track_name + ' ' + artist, relation='track')      #gets track search output from deezer
+def get_track_link(track_name, album, artists):
+    for artist1 in artists:                                         #loops through each artist in search
+        search_tracks = client.search(track_name + ' ' + artist1, relation='track')      #gets track search output from deezer
 
-    for track in search_tracks:                                 #loops through search output for correct track
-        if artist.lower() in track.get_artist().name.lower() and album.lower() in track.get_album().title.lower():      #if artist and album match, return url
-            return track.link
-    #"backup" method if cant find track
-    for track in search_tracks:
-        if artist.lower() in track.get_artist().name.lower() and track_name == album:      #if artist match and album = track name, return url
-            return track.link
-    #"backup backup" method if cant find track
-    for track in search_tracks:
-        if artist.lower() in track.get_artist().name.lower():      #if artist match, return url
-            return track.link
+        for track in search_tracks:                                         #loops through search output for correct track
+            for artist2 in artists:                                         #loops through each artist
+                if artist2.lower() in track.get_artist().name.lower() and album.lower() in track.get_album().title.lower():      #if artist and album match, return url
+                    return track.link
+        #"backup" method if cant find track
+        for track in search_tracks:                                         #loops through search output for correct track
+            for artist2 in artists:                                         #loops through each artist in artists array
+                if artist2.lower() in track.get_artist().name.lower() and track_name == album:                                   #if artist match and album = track name, return url
+                    return track.link
+        #"backup backup" method if cant find track
+        for track in search_tracks:                                         #loops through search output for correct track
+            for artist2 in artists:                                         #loops through each artist in artists array
+                if artist2.lower() in track.get_artist().name.lower():                                                           #if artist match, return url
+                    return track.link
 
-def get_album_link(album, artist):
-    search_albums = client.search(album, relation='album')      #gets album search output from deezer
 
-    for album in search_albums:
-        if artist.lower() in album.get_artist().name.lower():
-            return album.link
+
+def get_album_link(album, artist):                                          #loops through search output for correct track
+    for artist1 in artists:                                         #loops through each artist in search
+        search_albums = client.search(album, relation='album')              #gets album search output from deezer
+
+        for album in search_albums:                                         #loops through search output for correct track
+            for artist2 in artists:                                         #loops through each artist in artists array
+                if artist2.lower() in album.get_artist().name.lower():
+                    return album.link
 
 
 

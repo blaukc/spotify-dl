@@ -7,7 +7,7 @@ import wexpect
 from tabulate import tabulate
 
 arl = '3dadffaa3ed08377420042cf0ede03f5f02fe54be0499fde032737b32b8c3632d08ddca191262e50a16ae8f001a6877141188a6692a8f2426d6af58036e74232e9502403c1c2db250326471544ffb97f8663fa79035e50b4425947e632d56ae0'
-token = 'BQAYlzaKaXsv-Kja_i4_ioDKERBTCG2wQwJzJK6uKiZVyI0cQUB5L1huSSm7QUn1JrDQn2_faMCcgO3FCmy_MYmjRU3_2ejJ8TWJxP6Oaot6gcCVGFTN8g0f8WWdiONoDGykWNwIuBNPvnIA50iaC1eveBGz'
+token = 'BQD4-8K1iv4qBgWykm45vO5sa3miB4HyZXckhvZfyf-z-dT_Ymj6FsdUMa0BBbsdKrM9JSKR5lWey0J4uugBIIXkLqHH-nODr4-zTFfy5pU7SeNQ-S_kckRz-HDMi-_iTDpFUuoAN0Hz_7GissCZ13c3rLFt'
 current_dir = os.path.dirname(os.path.abspath(__file__))
 target_dir = os.path.join(current_dir, 'music')
 
@@ -50,7 +50,7 @@ print('\nGetting Deezer links')
 progress = 0
 for track in tracks:
     progress += 1
-    link = get_track_link(track[0], track[1], track[2][0])
+    link = get_track_link(track[0], track[1], track[2])
     tracks[progress - 1].append(link)
     if link == None:
         print('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
