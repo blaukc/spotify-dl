@@ -1,5 +1,4 @@
-from get_deezer import get_track_link, get_album_link
-from get_spotifyplaylist import get_spotify_playlist, get_spotify_playlist_name
+from get_functions import get_track_link, get_album_link, get_spotify_playlist, get_spotify_playlist_name
 import os
 import platform
 import pexpect
@@ -33,17 +32,19 @@ def downloadmusic(download_dir, deezer_url, arl):
 
 
 
-
+#Start of script
 print('Starting Music Downloader...')
 playlist = input('Enter Spotify Playlist URL: ')
 #Gets tracks from spotify playlist
 tracks = get_spotify_playlist(playlist, token)
+
 
 #Checks playlist
 print('\n' + tabulate(tracks, headers=['Track', 'Album', 'Artists']))
 verify = input('Is playlist correct? (y/n) ')
 if verify.lower() != 'y':
     exit()
+
 
 #Gets Deezer links
 print('\nGetting Deezer links')
@@ -57,6 +58,7 @@ for track in tracks:
     else:
         print('Gotten [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0])
 
+
 #Create directory
 name = get_spotify_playlist_name(playlist, token)
 download_dir = os.path.join(target_dir, name)
@@ -64,6 +66,7 @@ try:
     os.mkdir(download_dir)
 except FileExistsError:
     print(download_dir + ' already exists')
+
 
 #Downloads tracks with deemix
 print('\nDownloading tracks')
