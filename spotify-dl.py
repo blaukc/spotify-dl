@@ -6,7 +6,7 @@ import argparse
 
 
 def if_verbose(text, verbose):
-    if verbose:
+    if verbose:         #print text if verbose is on
         print(text)
 
 
@@ -15,7 +15,7 @@ def spotify_dl_playlist(endpoint, verbose):
     name, album_artist = get_spotify_playlist_name(endpoint, config.spotify_token, 'playlist')
 
 
-    #Create directory
+    #Create directory for playlist download
     download_dir = os.path.join(config.download_dir, name)
     try:
         os.mkdir(download_dir)
@@ -38,13 +38,13 @@ def spotify_dl_playlist(endpoint, verbose):
     #Gets Deezer links
     print('\nGetting Deezer links')
     progress = 0
-    for track in tracks:
+    for track in tracks:            #loops through each track and gets deezer link
         progress += 1
         link = get_track_link(track[0], track[1], track[2])
         tracks[progress - 1].append(link)
-        if link == None:
+        if link == None:            #if deezer unable to find song, output failed
             if_verbose('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0], verbose)
-        else:
+        else:                       #if deezer able to find song, output success
             if_verbose('Gotten [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0], verbose)
             if_verbose(link, verbose)
 
@@ -54,13 +54,13 @@ def spotify_dl_playlist(endpoint, verbose):
     print('\nDownloading tracks')
     progress = 0
     success = 0
-    for track in tracks:
+    for track in tracks:            #loops through each track and downloads it
         progress += 1
         try:
             download_track(download_dir, track[3], config.deezer_arl)
             if_verbose('Completed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0], verbose)
             success += 1
-        except Exception as e:
+        except Exception as e:      #if error in downloading track, output as failed
             if_verbose('Failed [' + str(progress) + '/' + str(len(tracks)) + ']: ' + track[0], verbose)
             print(e)
 
@@ -88,11 +88,11 @@ def spotify_dl_album(endpoint, verbose):
 
 
     #Gets Deezer links
-    print('\nGetting Deezer links')
+    print('\nGetting Deezer link')
     link = get_album_link(name, album_artist)
-    if link == None:
+    if link == None:                #if deezer unable to find album, output failed
         if_verbose('Unable to get album: ' + name, verbose)
-    else:
+    else:                           #if deezer unable to find album, output success
         if_verbose('Gotten album link: ' + name, verbose)
         if_verbose(link, verbose)
 
