@@ -73,7 +73,7 @@ def spotify_dl_playlist(endpoint, verbose):
 def spotify_dl_album(endpoint, verbose):
     #Get playlist name & album artist
     name, album_artist = get_spotify_playlist_name(endpoint, config.spotify_token, 'album')
-
+    
 
     #Gets tracks from spotify playlist
     tracks = get_spotify_album(endpoint, config.spotify_token, name)

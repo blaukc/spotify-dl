@@ -2,6 +2,7 @@ import platform
 # import pexpect
 # import wexpect
 import config
+import re
 
 #get download for individual tracks
 def download_track(download_dir, deezer_url, arl):
@@ -30,8 +31,10 @@ def download_track(download_dir, deezer_url, arl):
 def download_album(download_dir, deezer_url, arl, total_tracks, if_verbose, verbose):
     try:
         if platform.system() == 'Windows':  #spawns child using wepect/pexpect depending on OS
+            import wexpect
             child = wexpect.spawn('deemix -b ' + config.bitrate + ' -p ' + '\"' + download_dir + '\" ' + deezer_url)
         else:
+            import pexpect
             child = pexpect.spawn('deemix -b ' + config.bitrate + ' -p ' + '\"' + download_dir + '\" ' + deezer_url)
 
         i = child.expect(['Paste here your arl:', 'Download URL got'], timeout=10)

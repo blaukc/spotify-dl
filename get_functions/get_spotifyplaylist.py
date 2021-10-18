@@ -104,11 +104,11 @@ def get_spotify_playlist_name(endpoint, token, type):
             artists = []
             for artist in parsed['artists']:
                 artists.append(artist['name'])
+        else:
+            artists = None
     except:
         print('Playlist link wrong or token expired')
         exit()
 
-    else:
-        artists = None
 
     return name, artists
