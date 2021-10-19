@@ -10,6 +10,8 @@ Clone project
 
 When in project directory, install requirements
 
+See troubleshooting if you get errors
+
     pip install -r requirements.txt
 
 ## config.py
@@ -57,4 +59,16 @@ When in project directory
 Verbose mode
 
     python spotify_dl.py -v https://open.spotify.com/album/6pEz5WCvDGB8ved9AcouQ5
-    
+
+
+# Troubleshooting
+
+### No Microsoft Visual C++
+
+![error 1](https://i.imgur.com/8jcYL3i.png)
+
+If experiencing this error, you need to download [Microsoft Visual C++](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+
+Make sure to tick Desktop Development with C++ when installing
+
+![error 2](https://i.imgur.com/VYenln4.png)
