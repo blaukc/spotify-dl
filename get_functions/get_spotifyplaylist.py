@@ -54,8 +54,14 @@ def get_spotify_playlist(endpoint, token):
         track = song_info['name']
 
         #remove brackets from track name and album name
-        track = remove_brackets(track)
-        album = remove_brackets(album)
+        try:
+            track = remove_brackets(track)
+        except:
+            pass
+        try:
+            album = remove_brackets(album)
+        except:
+            pass
 
         tracks.append([track, album, artists])
 
@@ -83,8 +89,14 @@ def get_spotify_album(endpoint, token, album):
         track = song_info['name']
 
         #remove brackets from track name and album name
-        track = remove_brackets(track)
-        album = remove_brackets(album)
+        try:
+            track = remove_brackets(track)
+        except:
+            pass
+        try:
+            album = remove_brackets(album)
+        except:
+            pass
 
         tracks.append([track, album, artists])
 
