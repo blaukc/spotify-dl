@@ -13,7 +13,7 @@ def download_track(download_dir, deezer_url, arl):
         import pexpect
         child = pexpect.spawn('deemix -b ' + config.bitrate + ' -p ' + '\"' + download_dir + '\" ' + deezer_url)
 
-    i = child.expect(['Paste here your arl:', 'Download URL got'], timeout=10)
+    i = child.expect(['Paste here your arl:', 'Download URL got'], timeout=config.timeout)
     if i == 0:              #if child requests ARL, reply with ARL
         print('Requesting ARL')
         child.sendline(arl)
@@ -37,7 +37,7 @@ def download_album(download_dir, deezer_url, arl, total_tracks, if_verbose, verb
             import pexpect
             child = pexpect.spawn('deemix -b ' + config.bitrate + ' -p ' + '\"' + download_dir + '\" ' + deezer_url)
 
-        i = child.expect(['Paste here your arl:', 'Download URL got'], timeout=10)
+        i = child.expect(['Paste here your arl:', 'Download URL got'], timeout=config.timeout)
         if i == 0:              #if child requests ARL, reply with ARL
             print('Requesting ARL')
             child.sendline(arl)
